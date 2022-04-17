@@ -1,4 +1,5 @@
-# Taller 2 - Spotyfiuba
+# Aninfo-Módulo-Proyectos
+Módulo Proyectos del sistema para la empresa PSA - Análisis de la Información FIUBA
 
 # Cómo comenzar:
 
@@ -6,31 +7,44 @@
 Python 3.6+
 
 ## Cómo instalar FastAPI:
-Instalar el entorno virtual pipenv *[opcional]*:
+Instalar el entorno virtual venv :
 ```
-pip install pipenv
+python3 -m venv venv
 ```
-Instalar FastAPI y uvicorn (necesario para manejar dependencias):
+Activar el entorno virtual usando:
 ```
-sudo -H pipenv install fastapi uvicorn
+source venv/bin/activate
 ```
-Activar el entorno virtual *[opcional]*:
+Instalar los paquetes (necesario para manejar dependencias):
 ```
-pipenv shell
-```
-
-## Cómo levantar el servidor:
-
-```
-uvicorn main:app --reload
+pip install fastapi fastapi-sqlalchemy pydantic alembic psycopg2 uvicorn python-dotenv pip install pydantic[email]
 ```
 
-El comando refiere a:
+## Cómo levantar el servidor usando Docker:
 
-**app**: el archivo app.py (el "módulo" de Python).
+Ir al directorio del proyecto (en donde está el archivo Dockerfile) para hacer build de la imagen de nuestro proyecto:
 
-**app**: el objeto creado adentro de app.py con la línea app = FastAPI().
+```
+docker-compose build
+```
 
-**--reload**: hace que el servidor se reinice después de un cambio en el código. Sólo se usa para desarrollo.
+Luego ejecutar el comando:
+```
+docker-compose up
+```
 
-Esto levanta en localhost en el puerto 8000 --> http://127.0.0.1:8000
+Esto levanta en localhost en el puerto 8000 --> http://0.0.0.0:8000
+
+## Cómo correr las migraciones usando Alembic:
+Para generar las migraciones ejecutamos este comando
+
+```
+docker-compose run app alembic revision --autogenerate -m "New Migration"
+```
+
+Con el flag -m se crea un comentario para la nueva migración.
+
+Luego, una vez hecho esto, hacemos que las migraciones persistan en la base de datos con el siguiente comando:
+```
+docker-compose run app alembic upgrade head
+```
