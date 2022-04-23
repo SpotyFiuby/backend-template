@@ -8,11 +8,8 @@ services:
     restart: always
     ports:
       - 5432:5432
-    environment:
-      - DATABASE_URL=p=${DATABASE_URL}
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - POSTGRES_DB=${DB_NAME}
+    env_file:
+      - .env
 
   app:
     container_name: app
@@ -25,3 +22,5 @@ services:
     depends_on:
       - db
     restart: always 
+    env_file:
+      - .env
