@@ -30,5 +30,5 @@ class UserUpdate(UserBase):
     password: Optional[str] = None
 
 # Additional properties to return via API
-class User(UserInDBBase):
+class Users(UserInDBBase):
     pass

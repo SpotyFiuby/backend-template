@@ -5,14 +5,14 @@ from sqlalchemy.orm import Session
 # import getDB from app/db/database.py
 from app.db.database import getDB
 
-from app.crud.crud_user import user as user_crud
-from app.schemas.user import User
+from app.crud.crud_users import users as users_crud
+from app.schemas.users import Users
 
 
 router = APIRouter()
 
 
-@router.get("/", response_model=List[User])
+@router.get("/", response_model=List[Users])
 def readUsers(
     db: Session = Depends(getDB),
     skip: int = 0,
@@ -21,7 +21,7 @@ def readUsers(
     """
     Retrieve users.
     """
-    users = user_crud.get_multi(db, skip=skip, limit=limit)
+    users = users_crud.get_multi(db, skip=skip, limit=limit)
     if users:
         raise HTTPException(
             status_code=400,
@@ -30,26 +30,26 @@ def readUsers(
     return users
 
 
-@router.post("/", response_model=User)
+@router.post("/", response_model=Users)
 def createUser(
     *,
     db: Session = Depends(getDB),
-    user_in: User,
+    user_in: Users,
 ) -> Any:
     """
     Create new user.
     """
-    user = user_crud.get_by_email(db, email=user_in.email)
+    user = users_crud.get_by_email(db, email=user_in.email)
     if user:
         raise HTTPException(
             status_code=400,
             detail="The user with this username already exists in the system.",
         )
-    user = user_crud.create(db, obj_in=user_in)
+    user = users_crud.create(db, obj_in=user_in)
     return user
 
 
-@router.get("/{user_id}", response_model=User)
+@router.get("/{user_id}", response_model=Users)
 def readUserByID(
     user_id: int,
     db: Session = Depends(getDB),
@@ -57,7 +57,7 @@ def readUserByID(
     """
     Get a specific user by id.
     """
-    user = user_crud.get(db, id=user_id)
+    user = users_crud.get(db, id=user_id)
     if not user:
         raise HTTPException(
             status_code=404,
@@ -66,27 +66,27 @@ def readUserByID(
     return user
 
 
-@router.put("/{user_id}", response_model=User)
+@router.put("/{user_id}", response_model=Users)
 def updateUser(
     *,
     db: Session = Depends(getDB),
     user_id: int,
-    user_in: User,
+    user_in: Users,
 ) -> Any:
     """
     Update a user.
     """
-    user = user_crud.get(db, id=user_id)
+    user = users_crud.get(db, id=user_id)
     if not user:
         raise HTTPException(
             status_code=404,
             detail="The user does not exist in the system",
         )
-    user = user_crud.update(db, db_obj=user, obj_in=user_in)
+    user = users_crud.update(db, db_obj=user, obj_in=user_in)
     return user
 
 
-@router.delete("/{user_id}", response_model=User)
+@router.delete("/{user_id}", response_model=Users)
 def deleteUser(
     *,
     db: Session = Depends(getDB),
@@ -95,8 +95,8 @@ def deleteUser(
     """
     Delete an item.
     """
-    user = user_crud.get(db, id=user_id)
+    user = users_crud.get(db, id=user_id)
     if not user:
         raise HTTPException(status_code=404, detail="Item not found")
-    user = user_crud.remove(db=db, id=user_id)
+    user = users_crud.remove(db=db, id=user_id)
     return user

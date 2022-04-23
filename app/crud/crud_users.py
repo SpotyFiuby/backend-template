@@ -1,16 +1,16 @@
 from typing import Any, Dict, Optional, Union
 from sqlalchemy.orm import Session
 from app.crud.base import CRUDBase
-from app.models.user import User
-from app.schemas.user import UserCreate, UserUpdate
+from app.models.users import Users
+from app.schemas.users import UserCreate, UserUpdate
 
 
-class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
-    def get_by_email(self, db: Session, *, email: str) -> Optional[User]:
-        return db.query(User).filter(User.email == email).first()
+class CRUDUser(CRUDBase[Users, UserCreate, UserUpdate]):
+    def get_by_email(self, db: Session, *, email: str) -> Optional[Users]:
+        return db.query(Users).filter(Users.email == email).first()
 
-    def create(self, db: Session, *, obj_in: UserCreate) -> User:
-        db_obj = User(
+    def create(self, db: Session, *, obj_in: UserCreate) -> Users:
+        db_obj = Users(
             email=obj_in.email,
             full_name=obj_in.full_name,
             is_superuser=obj_in.is_superuser,
@@ -24,9 +24,9 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
         self,
         db: Session,
         *,
-        db_obj: User,
+        db_obj: Users,
         obj_in: Union[UserUpdate, Dict[str, Any]]
-    ) -> User:
+    ) -> Users:
         if isinstance(obj_in, dict):
             update_data = obj_in
         else:
@@ -34,4 +34,4 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
         return super().update(db, db_obj=db_obj, obj_in=update_data)
 
 
-user = CRUDUser(User)
+users = CRUDUser(Users)

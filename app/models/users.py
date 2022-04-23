@@ -4,8 +4,8 @@ import datetime
 from app.db.database import Base
 
 
-class User(Base):
-    __tablename__ = "user"
+class Users(Base):
+    __tablename__ = "users"
     
     id = Column(Integer, primary_key=True, index=True)
     firstName = Column(String, index=True)

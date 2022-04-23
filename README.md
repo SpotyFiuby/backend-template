@@ -17,7 +17,7 @@ source venv/bin/activate
 ```
 Instalar los paquetes (necesario para manejar dependencias):
 ```
-pip install fastapi fastapi-sqlalchemy pydantic alembic psycopg2 uvicorn python-dotenv pip install pydantic[email]
+pip install fastapi fastapi-sqlalchemy pydantic alembic psycopg2 uvicorn python-dotenv pydantic[email]
 ```
 
 ## Cómo levantar el servidor usando Docker:
