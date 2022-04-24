@@ -12,8 +12,9 @@ class CRUDUser(CRUDBase[Users, UserCreate, UserUpdate]):
     def create(self, db: Session, *, obj_in: UserCreate) -> Users:
         db_obj = Users(
             email=obj_in.email,
-            full_name=obj_in.full_name,
-            is_superuser=obj_in.is_superuser,
+            firstName=obj_in.firstName,
+            lastName=obj_in.lastName,
+            phoneNumber=obj_in.phoneNumber,
         )
         db.add(db_obj)
         db.commit()
