@@ -1,21 +1,16 @@
+import os
+from dotenv import load_dotenv
 from fastapi import FastAPI
-from app.routers import user_controller
-from starlette.middleware.cors import CORSMiddleware
+from app.api.api import api_router
+from fastapi_sqlalchemy import DBSessionMiddleware
+
+load_dotenv(".env")
 
 app = FastAPI()
 
-origins = ["*"]
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-app.include_router(user_controller.router)
+app.add_middleware(DBSessionMiddleware, db_url=os.environ["DATABASE_URL"])
+app.include_router(api_router)
 
 @app.get("/", tags=["Home"])
 def home():
-    return "Spotifiuba - 2022"
+    return {"message": "Spotifiuba - 2022"}
