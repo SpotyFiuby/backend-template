@@ -10,3 +10,7 @@ app = FastAPI()
 
 app.add_middleware(DBSessionMiddleware, db_url=os.environ["DATABASE_URL"])
 app.include_router(api_router)
+
+@app.get("/", tags=["Home"])
+def home():
+    return {"message": "Spotifiuba - 2022"}

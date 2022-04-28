@@ -22,10 +22,10 @@ def readUsers(
     Retrieve users.
     """
     users = users_crud.get_multi(db, skip=skip, limit=limit)
-    if users:
+    if not users:
         raise HTTPException(
             status_code=400,
-            detail="The user with this username already exists in the system.",
+            detail="Error getting all the users.",
         )
     return users
 
